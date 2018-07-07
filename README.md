@@ -1,29 +1,11 @@
-### Ideias de modelos para explicar
+## O QUE É?
 
-- [Traffic Grid](https://ccl.northwestern.edu/netlogo/models/TrafficGrid)
-- [Mouse Traps 3D](https://ccl.northwestern.edu/netlogo/models/Mousetraps3D)
-- [Reactor Top Down](https://ccl.northwestern.edu/netlogo/models/ReactorTopDown)
+Este é um modelo de epidemia de um vírus hipotético responsável por mutar o código genético do infectado transformando-o em um zumbi.
 
-### Ideias de modelos para implementação
+## COMO FUNCIONA?
 
-- Simulação de acordos de interconexão
+Como a contaminação de vírus comuns, neste modelo ela é mais provável em áreas mais densamente povoadas.
 
----
+## COMO UTILIZAR
 
-## Implementação no NetLogo
-
-- Individual ou duplas
-- Implementação + texto + apresentação
-- 40% da nota final
-
-### Detalhes
-
-- Implementar no NetLogo o SMA de um problema a ser modelado.
-- Texto de uma página dizendo o Foco, Agentes, e Regras do sistema e definição do ambiente.
-- Apresentar evolução da execução e explicar o porquê da evolução.
-
-### Entregáveis
-
-- Relatório
-- Código
-- Apresentação
+Clicar em Criar para construir o ambiente e em Infectar para inserir um indivíduo infectado na população.
