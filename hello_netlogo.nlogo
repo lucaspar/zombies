@@ -27,7 +27,7 @@ to setup
   set INFECTED yellow
   set TERMINAL red
 
-  set NORMAL_SPEED 0.1
+  set NORMAL_SPEED 0.003
   set ZOMBIE_RELATIVE_SPEED 0.5
   set INCUBATION_PERIOD 10
 
@@ -115,7 +115,7 @@ to simulate
   ]
 
   ; Timed events
-  if (ticks mod 10) = 0 [
+  if (ticks mod 100) = 0 [
     incubation_step
   ]
   tick
@@ -169,29 +169,12 @@ ticks
 30.0
 
 BUTTON
-118
-262
-192
-295
+160
+240
+260
+273
 Criar
 setup
-NIL
-1
-T
-OBSERVER
-NIL
-S
-NIL
-NIL
-1
-
-BUTTON
-38
-262
-117
-295
-Limpar
-ct
 NIL
 1
 T
@@ -202,11 +185,28 @@ NIL
 NIL
 1
 
+BUTTON
+20
+240
+115
+273
+Limpar
+ct
+NIL
+1
+T
+OBSERVER
+NIL
+L
+NIL
+NIL
+1
+
 SLIDER
-17
-14
+20
+10
 260
-47
+43
 population_size
 population_size
 1
@@ -218,10 +218,10 @@ indivíduos
 HORIZONTAL
 
 BUTTON
-94
-319
-179
-352
+85
+295
+200
+328
 Simular
 simulate
 T
@@ -229,7 +229,7 @@ T
 T
 OBSERVER
 NIL
-NIL
+S
 NIL
 NIL
 1
@@ -288,40 +288,40 @@ count turtles with [color = TERMINAL]
 11
 
 SLIDER
-18
-60
-216
-94
+20
+50
+260
+83
 zombie_percentage
 zombie_percentage
 0
 1
-0.1
+0.06
 0.01
 1
 NIL
 HORIZONTAL
 
 SLIDER
-19
-103
-192
-137
+20
+95
+260
+128
 NORMAL_SPEED
 NORMAL_SPEED
 0
-1
-0.1
-0.1
+0.01
+0.003
+0.00001
 1
 NIL
 HORIZONTAL
 
 SLIDER
-17
-149
-254
-183
+20
+140
+260
+173
 ZOMBIE_RELATIVE_SPEED
 ZOMBIE_RELATIVE_SPEED
 0
@@ -333,10 +333,10 @@ NIL
 HORIZONTAL
 
 SLIDER
-18
-193
+20
+185
+260
 218
-227
 INCUBATION_PERIOD
 INCUBATION_PERIOD
 0
@@ -689,7 +689,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.4
+NetLogo 6.0.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
