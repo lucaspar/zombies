@@ -7,10 +7,10 @@ globals [
   HEALTHY INFECTED TERMINAL
 
   ; Disease spread
-  INCUBATION_PERIOD
+  ;INCUBATION_PERIOD
 
   ; Movements dexterity
-  NORMAL_SPEED ZOMBIE_RELATIVE_SPEED
+  ;NORMAL_SPEED ZOMBIE_RELATIVE_SPEED
   NORMAL_TURNING_AMPLITUDE ZOMBIE_RELATIVE_TURNING_AMPLITUDE
 
 ]
@@ -34,13 +34,16 @@ to setup
   set WIDTH world-width
   set HEIGHT world-height
 
+  set-default-shape humans "person"
+  set-default-shape zombies "person"
+
   ; Create 10 normal turtles
-  create-humans population_size [
+  create-humans population_size * (1 - zombie_percentage) [
     set color HEALTHY
     set xcor (random WIDTH) - WIDTH / 2
     set ycor (random HEIGHT) - HEIGHT / 2
   ]
-  create-zombies 1 [
+  create-zombies population_size * zombie_percentage [
     set color TERMINAL
     set xcor (random WIDTH) - WIDTH / 2
     set ycor (random HEIGHT) - HEIGHT / 2
@@ -137,7 +140,6 @@ to incubation_step
     ]
   ]
 end
-
 @#$#@#$#@
 GRAPHICS-WINDOW
 283
@@ -160,17 +162,17 @@ GRAPHICS-WINDOW
 16
 -16
 16
-1
-1
+0
+0
 1
 ticks
 30.0
 
 BUTTON
-129
-101
-203
-134
+118
+262
+192
+295
 Criar
 setup
 NIL
@@ -184,10 +186,10 @@ NIL
 1
 
 BUTTON
-50
-101
-129
-134
+38
+262
+117
+295
 Limpar
 ct
 NIL
@@ -209,17 +211,17 @@ population_size
 population_size
 1
 100
-33.0
+100.0
 1
 1
 indivíduos
 HORIZONTAL
 
 BUTTON
-106
-158
-191
-191
+94
+319
+179
+352
 Simular
 simulate
 T
@@ -231,6 +233,119 @@ NIL
 NIL
 NIL
 1
+
+MONITOR
+1032
+10
+1103
+55
+HEALTHY
+count turtles with [color = HEALTHY]
+17
+1
+11
+
+MONITOR
+956
+10
+1031
+55
+INFECTED
+count turtles with [color = INFECTED]
+17
+1
+11
+
+PLOT
+952
+104
+1330
+364
+Classes Distribuitions
+time
+count
+0.0
+10.0
+0.0
+10.0
+true
+true
+"" ""
+PENS
+"Healthy" 1.0 0 -10899396 true "" "plot count turtles with [color = HEALTHY]"
+"Infected" 1.0 0 -1184463 true "" "plot count turtles with [color = INFECTED]"
+"Terminal" 1.0 0 -2674135 true "" "plot count turtles with [color = TERMINAL]"
+
+MONITOR
+1104
+10
+1179
+55
+TERMINAL
+count turtles with [color = TERMINAL]
+17
+1
+11
+
+SLIDER
+18
+60
+216
+94
+zombie_percentage
+zombie_percentage
+0
+1
+0.1
+0.01
+1
+NIL
+HORIZONTAL
+
+SLIDER
+19
+103
+192
+137
+NORMAL_SPEED
+NORMAL_SPEED
+0
+1
+0.1
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+17
+149
+254
+183
+ZOMBIE_RELATIVE_SPEED
+ZOMBIE_RELATIVE_SPEED
+0
+1
+0.5
+0.1
+1
+NIL
+HORIZONTAL
+
+SLIDER
+18
+193
+218
+227
+INCUBATION_PERIOD
+INCUBATION_PERIOD
+0
+100
+10.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## O QUE É?
@@ -574,7 +689,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.3
+NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
@@ -591,5 +706,5 @@ true
 Line -7500403 true 150 150 90 180
 Line -7500403 true 150 150 210 180
 @#$#@#$#@
-0
+1
 @#$#@#$#@
