@@ -1,4 +1,16 @@
-globals [ NORMAL INFECTED TERMINAL ]
+globals [
+
+  ; Simulation area
+  WIDTH HEIGHT
+
+  ; infection colors
+  NORMAL INFECTED TERMINAL
+
+  ; movements dexterity
+  NORMAL_SPEED ZOMBIE_RELATIVE_SPEED
+  NORMAL_TURNING_AMPLITUDE ZOMBIE_RELATIVE_TURNING_AMPLITUDE
+
+]
 
 breed [ humans human ]
 breed [ zombies zombie ]
@@ -10,9 +22,23 @@ to setup
   set INFECTED yellow
   set TERMINAL red
 
+  set NORMAL_SPEED 0.001
+  set ZOMBIE_RELATIVE_SPEED 0.5
+
+  set WIDTH world-width
+  set HEIGHT world-height
+
   ; Create 10 normal turtles
-  create-humans populationSize [ set color NORMAL ]
-  create-zombies 1 [ set color TERMINAL ]
+  create-humans populationSize [
+    set color NORMAL
+    set xcor (random WIDTH) - WIDTH / 2
+    set ycor (random HEIGHT) - HEIGHT / 2
+  ]
+  create-zombies 1 [
+    set color TERMINAL
+    set xcor (random WIDTH) - WIDTH / 2
+    set ycor (random HEIGHT) - HEIGHT / 2
+  ]
 
 end
 
@@ -29,18 +55,18 @@ end
 to simulate
 
   ask humans [
-    let amplitude 90
+    let amplitude NORMAL_TURNING_AMPLITUDE
     let rdn random amplitude
     let turn-degree rdn - (amplitude / 2)
-    forward 2
+    forward NORMAL_SPEED
     set heading (heading + turn-degree)
   ]
 
   ask zombies [
-    let amplitude 20
+    let amplitude NORMAL_TURNING_AMPLITUDE * ZOMBIE_RELATIVE_TURNING_AMPLITUDE
     let rdn random amplitude
     let turn-degree rdn - (amplitude / 2)
-    forward 1
+    forward NORMAL_SPEED * ZOMBIE_RELATIVE_SPEED
     set heading (heading + turn-degree)
   ]
 
@@ -125,9 +151,9 @@ NIL
 BUTTON
 50
 101
-119
+129
 134
-Clear
+Limpar
 ct
 NIL
 1
