@@ -3,10 +3,13 @@ globals [
   ; Simulation area
   WIDTH HEIGHT
 
-  ; infection colors
-  NORMAL INFECTED TERMINAL
+  ; Infection colors
+  HEALTHY INFECTED TERMINAL
 
-  ; movements dexterity
+  ; Disease spread
+  INCUBATION_PERIOD
+
+  ; Movements dexterity
   NORMAL_SPEED ZOMBIE_RELATIVE_SPEED
   NORMAL_TURNING_AMPLITUDE ZOMBIE_RELATIVE_TURNING_AMPLITUDE
 
@@ -15,22 +18,25 @@ globals [
 breed [ humans human ]
 breed [ zombies zombie ]
 
+humans-own [ inc_countdown ] ; incubation countdown
+
 ; Setup environment
 to setup
 
-  set NORMAL green
+  set HEALTHY green
   set INFECTED yellow
   set TERMINAL red
 
-  set NORMAL_SPEED 0.001
+  set NORMAL_SPEED 0.1
   set ZOMBIE_RELATIVE_SPEED 0.5
+  set INCUBATION_PERIOD 10
 
   set WIDTH world-width
   set HEIGHT world-height
 
   ; Create 10 normal turtles
-  create-humans populationSize [
-    set color NORMAL
+  create-humans population_size [
+    set color HEALTHY
     set xcor (random WIDTH) - WIDTH / 2
     set ycor (random HEIGHT) - HEIGHT / 2
   ]
@@ -39,6 +45,8 @@ to setup
     set xcor (random WIDTH) - WIDTH / 2
     set ycor (random HEIGHT) - HEIGHT / 2
   ]
+
+  reset-ticks
 
 end
 
@@ -55,63 +63,90 @@ end
 to simulate
 
   ask humans [
+
+    let this_human self
+
+    ; Movements
     let amplitude NORMAL_TURNING_AMPLITUDE
     let rdn random amplitude
     let turn-degree rdn - (amplitude / 2)
     forward NORMAL_SPEED
     set heading (heading + turn-degree)
+
+    ; Scream so nearby zombies can follow healthy humans
+    if color = HEALTHY [
+      ask zombies with [ distance this_human < 3 ] [
+        set heading towards myself
+      ]
+    ]
+
+    ; Spread disease if infected
+    if color = INFECTED [
+      ask humans with [ distance myself < 1 ] [
+        if color = HEALTHY [
+          set color INFECTED
+          set inc_countdown INCUBATION_PERIOD ; start incubation countdown
+        ]
+      ]
+    ]
+
   ]
 
   ask zombies [
+
+    ; Movements
     let amplitude NORMAL_TURNING_AMPLITUDE * ZOMBIE_RELATIVE_TURNING_AMPLITUDE
     let rdn random amplitude
     let turn-degree rdn - (amplitude / 2)
     forward NORMAL_SPEED * ZOMBIE_RELATIVE_SPEED
     set heading (heading + turn-degree)
+
+    ; Disease transmission
+    ask humans with [ distance myself < 1 ] [
+      if color = HEALTHY [
+        set color INFECTED
+        set inc_countdown INCUBATION_PERIOD ; start incubation countdown
+      ]
+    ]
+
   ]
 
-end
-
-; do some simple calcs and output them
-to calculate
-
-  let result 1
-  let a 10
-  let b 5
-  set result a + b
-
-  print (word "The result is " result)
-
-end
-
-to data-types
-
-  let num 0
-  let str "this is a test"
-  let boo true
-
-  let alist [ false "i am a string" 34 ] ; a list with 3 items
-  let all-turtles turtles ; all turtles (agentset)
-  let all-patches patches ; all patches (agentset)
-
-  print (word "num: " num " str: " str " boo: " boo)
-  print (word "alist: " alist " all-turtles: " all-turtles " all-patches: " all-patches)
-  print (word "item 0: " item 0 alist)
-
-  foreach alist [ x ->
-    print x
+  ; Timed events
+  if (ticks mod 10) = 0 [
+    incubation_step
   ]
+  tick
 
 end
+
+to incubation_step
+  ask humans [
+    if color = INFECTED [
+
+      ; Decrement countdown or...
+      if inc_countdown > 0 [
+        set inc_countdown inc_countdown - 1
+      ]
+
+      ; ... Turn into zombie if time is out
+      if inc_countdown <= 0 [
+        set breed zombies
+        set color TERMINAL
+      ]
+
+    ]
+  ]
+end
+
 @#$#@#$#@
 GRAPHICS-WINDOW
-275
+283
 10
-932
-668
+938
+666
 -1
 -1
-19.67
+19.63
 1
 10
 1
@@ -125,8 +160,8 @@ GRAPHICS-WINDOW
 16
 -16
 16
-0
-0
+1
+1
 1
 ticks
 30.0
@@ -168,13 +203,13 @@ NIL
 SLIDER
 17
 14
-255
+260
 47
-populationSize
-populationSize
+population_size
+population_size
 1
 100
-26.0
+33.0
 1
 1
 indivíduos
