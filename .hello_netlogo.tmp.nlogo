@@ -36,7 +36,7 @@ to simulate
     set heading (heading + turn-degree)
   ]
 
-  ask  [
+  ask zombies [
     let amplitude 20
     let rdn random amplitude
     let turn-degree rdn - (amplitude / 2)
@@ -110,7 +110,7 @@ BUTTON
 101
 203
 134
-Setup
+Criar
 setup
 NIL
 1
@@ -125,9 +125,9 @@ NIL
 BUTTON
 50
 101
-119
+129
 134
-Clear
+Limpar
 ct
 NIL
 1

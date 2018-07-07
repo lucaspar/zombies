@@ -110,7 +110,7 @@ BUTTON
 101
 203
 134
-Setup
+Criar
 setup
 NIL
 1
